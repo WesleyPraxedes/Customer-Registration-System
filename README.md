@@ -1,2 +1,2 @@
-# Customer-Registration-System
+# Customer Registration System
 SysCostRegi
