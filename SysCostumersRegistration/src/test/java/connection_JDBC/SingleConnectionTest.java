@@ -2,7 +2,7 @@ package connection_JDBC;
 
 import org.junit.Test;
 
-public class TesteSingleConnection {
+public class SingleConnectionTest {
 	
 	@Test
 	public void initBanconame() {
