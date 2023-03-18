@@ -196,17 +196,21 @@ public class StartProgram {
 			System.out.println("##  Add customer  ##\n");
 			
 	        System.out.print("What is the customer name? ");
-	        String name = inputString.nextLine();
+	        String name = checkEmptyField();
 	        
 	        System.out.print("What is the customer email? ");
-	        String email = inputString.nextLine();
+	        String email;
+	        do {
+	        	email = checkExistEmail();
+					if (email.intern() == "")
+						System.out.println("This field cannot be empty! :");
+			}while( email.equals(""));
 	        
-	        // Create record object and pass constructor
-	        // parameters.
+	        
 	        CustomerDao dao = new CustomerDao();
 			Customer customer = new Customer();
-			customer.setName(name);
-			customer.setEmail(email);
+			customer.setName(name.toUpperCase());
+			customer.setEmail(email.toLowerCase());
 			dao.add(customer);
 			System.out.println("New customer added!");
 		}
@@ -234,10 +238,10 @@ public class StartProgram {
 			String name = inputString.nextLine();
 			
 			System.out.println("Type enter to skip or new email to update "+customer.getEmail()+" : ");
-	        String email = inputString.nextLine();
+	        String email = checkExistEmail();
 	        
-	        customer.setName((name.intern() != "".intern())? name : customer.getName());
-			customer.setEmail((email.intern() != "".intern())? email : customer.getEmail());
+	        customer.setName((name.intern() != "".intern())? name : customer.getName().toUpperCase());
+			customer.setEmail((email.intern() != "".intern())? email : customer.getEmail().toLowerCase());
 			dao.update(customer);
 			
 			System.out.println("\n  Successful customer update!");
@@ -343,7 +347,7 @@ public class StartProgram {
 	        PhoneDao dao = new PhoneDao();
 	        Phone phone = dao.searchById(Integer.valueOf(i).longValue());
 	        if(phone.getId() == null) {
-	        	System.out.println("  number not found\n");
+	        	System.out.println("  Number not found\n");
 	        	return;
 	        }
 
@@ -366,5 +370,41 @@ public class StartProgram {
 		System.out.println("\nType enter to continue!");
 		readText = inputString.nextLine();		
 	}
-
+	
+	// Check exist email
+	public static String checkExistEmail() {
+		boolean existMail = true;
+		String email;
+		CustomerDao dao = new CustomerDao();
+		do {
+			email = inputString.nextLine();
+			if(email.equals("")) {
+				existMail = false;
+			} else {
+				try {
+					existMail = (boolean) dao.checkExistEmail(email);
+					if (existMail == true )
+						System.out.println("This email already exists, enter another email :");
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}while(existMail == true);
+		return email;
+	}
+	
+	// Check empty field
+		public static String checkEmptyField() {
+			boolean checkEmptyField = true;
+			String s;
+			do {
+				s = inputString.nextLine();
+					if (s.intern() != "")
+						checkEmptyField = false;
+					System.out.println("This field cannot be empty! :");
+			}while(checkEmptyField == true);
+			return s;
+		}
 }

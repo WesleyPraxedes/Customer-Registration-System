@@ -19,6 +19,16 @@ public class CustomerDaoTest {
 	}
 	
 	@Test
+	public void searchByEmailTest() {
+		try {
+			boolean b = dao.checkExistEmail("qqq");
+			System.out.println(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void listTest() {
 		try {
 			List<Customer> customers = dao.list();

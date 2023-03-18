@@ -18,7 +18,7 @@ public class CustomerDao {
 		connection = SingleConnection.getConnection();
 	}
 	
-	
+	// Add customer
 	public void add(Customer customer) {
 		try {
 			String sql = "insert into customer(name, email) values (?,?)";
@@ -37,7 +37,7 @@ public class CustomerDao {
 		}
 	}
 	
-	
+	// Update customer
 	public void update(Customer customer) {
 		try {
 			String sql = "update customer set name = ?, email = ? where id = " + customer.getId();
@@ -59,7 +59,7 @@ public class CustomerDao {
 		}
 	}	
 	
-	
+	// Search customer by id
 	public Customer searchById(Long id) throws Exception {
 		Customer customer = new Customer();
 		String sql = "select * from customer where id = " + id; 
@@ -75,7 +75,7 @@ public class CustomerDao {
 		return customer;
 	}
 	
-	
+	// Search customer by name
 	public List<Customer> searchByNameList(String partName) throws Exception {
 
 		List<Customer> list = new ArrayList<Customer>();
@@ -93,11 +93,25 @@ public class CustomerDao {
 
 			list.add(customer);
 		}
-
 		return list;
 	}
 	
+	// Search customer by email
+	public boolean checkExistEmail(String email) throws Exception {
 		
+		Customer customer = new Customer();
+		String sql = "SELECT * FROM customer WHERE email like '%"+email+"%'"; 
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultSet = statement.executeQuery();
+		
+		while (resultSet.next()) {
+            return true;
+		}
+		return false;
+	}
+	
+    // Display customer
 	public List<Customer> list() throws Exception {
 		List<Customer> list = new ArrayList<Customer>();
 
@@ -114,10 +128,10 @@ public class CustomerDao {
 
 			list.add(customer);
 		}
-
 		return list;
 	}
 	
+	// Display customer with phones
 	public List<Customer> listCustomerWithPhones() throws Exception {
 		List<Customer> list = new ArrayList<Customer>();
 
@@ -140,12 +154,12 @@ public class CustomerDao {
 		return list;
 	}
 	
-	
+	// Delete customer
 	public void delete(Long id) {
 		try {
 			String sqlphone = "delete from phone where customer_id = " + id;
 			String sql = "delete from customer where id = " + id;
-
+			
 			PreparedStatement statement = connection.prepareStatement(sqlphone);
 			statement.execute();
 			connection.commit();
@@ -153,11 +167,10 @@ public class CustomerDao {
 			statement = connection.prepareStatement(sql);
 			statement.execute();
 			connection.commit();
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 				System.out.println("Ocorreu um erro() "+e);
-
 		}
 	}
 }
