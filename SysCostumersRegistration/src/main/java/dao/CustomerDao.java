@@ -10,7 +10,7 @@ import java.util.List;
 import connection_JDBC.SingleConnection;
 import model.Customer;
 
-public class CustomerDao {
+public class CustomerDao{
 
 	private Connection connection;
 
