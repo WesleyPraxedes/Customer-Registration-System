@@ -99,7 +99,6 @@ public class CustomerDao {
 	// Search customer by email
 	public boolean checkExistEmail(String email) throws Exception {
 		
-		Customer customer = new Customer();
 		String sql = "SELECT * FROM customer WHERE email like '%"+email+"%'"; 
 		
 		PreparedStatement statement = connection.prepareStatement(sql);
